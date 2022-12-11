@@ -14,9 +14,15 @@ export const setHint = ({ text, rect }) => {
   `;
   }
   
-  if (tryCalculate(text, res => setContent(res)))
+  if (tryCalculate(
+      text,
+      res => setContent(`<span class="grey">=</span> ${res}`))
+    )
     showHint();
-  else if (tryConvertCurrency(text, res => setContent(res)))
+  else if (tryConvertCurrency(
+      text,
+      res => setContent(`<span class="grey">~</span> ${res}`))
+    )
     showHint();
   else
     return;

@@ -1,3 +1,8 @@
+// Import Rubik font
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+$primaryColor: #e1a72b;
+
 div#hint_extension__hint {
   position: absolute;
   top: 0;
@@ -7,10 +12,58 @@ div#hint_extension__hint {
   max-width: 800px;
   z-index: 999999;
 
-  $border: 2px solid #e1a72b;
+  font-family: 'Rubik', sans-serif;
+
+  $border: 2px solid $primaryColor;
   $background: #fff;
   $border-radius: 5px;
   $box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  
+  &--content {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 8px;
+    color:rgba(0, 0, 0, 0.9);
+
+    & > span.grey {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  &--buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    & img {
+      width: 24px;
+      height: 24px;
+
+      transition: transform 0.15s ease-in-out;
+      &:hover { transform: scale(1.1); }
+      
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+
+  &--icon_credits {
+    font-size: 10px;
+    font-weight: 400;
+    text-align: center;
+    color: $primaryColor;
+
+    & a {
+      font-size: inherit;
+      font-weight: inherit;
+      text-align: inherit;
+      color: inherit;
+    }
+  }
 
   &::before{
     content: '';
@@ -29,12 +82,9 @@ div#hint_extension__hint {
     box-shadow: $box-shadow;
   }
 
-  &--content {
+  &--wrap {
     transform: translateY(8px);
     padding: 16px;
-  
-    font-family: sans-serif;
-    font-size: 18px;
     
     border: $border;
     background: $background;
