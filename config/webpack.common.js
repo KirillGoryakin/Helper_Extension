@@ -1,7 +1,7 @@
 'use strict';
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const PATHS = require('./paths');
 
@@ -28,12 +28,18 @@ const common = {
   },
   module: {
     rules: [
-      // Help webpack in understanding CSS files imported in .js files
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.(s[ac]ss|css)$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
       },
-      // Check for images imported in .js files and
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
       {
         test: IMAGE_TYPES,
         use: [
@@ -45,6 +51,18 @@ const common = {
             },
           },
         ],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env'
+            ]
+          }
+        }
       },
     ],
   },
@@ -58,7 +76,6 @@ const common = {
         },
       ],
     }),
-    // Extract CSS into separate files
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),

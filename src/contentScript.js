@@ -1,43 +1,18 @@
-'use strict';
+import { createElementsFromHTML, getSelection } from './functions';
+import { setHint, hideHint } from './hint/hint';
 
-// Content script file will run in the context of web page.
-// With content script you can manipulate the web pages using
-// Document Object Model (DOM).
-// You can also pass information to the parent extension.
+import hintHTML from './hint/hint.html';
+import './hint/hint.scss';
 
-// We execute this script by making an entry in manifest.json file
-// under `content_scripts` property
+document.body.appendChild(createElementsFromHTML(hintHTML));
 
-// For more information on Content Scripts,
-// See https://developer.chrome.com/extensions/content_scripts
+document.onmouseup = (e) => {
+  if ( !e.target.id.includes('hint_extension__hint') ){
+    const selection = getSelection();
 
-// Log `title` of current active web page
-const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
-console.log(
-  `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
-);
-
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  (response) => {
-    console.log(response.message);
+    if (selection && selection.text.trim() && selection.rect)
+      setHint(selection);
+    else
+      hideHint();
   }
-);
-
-// Listen for message
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
-  }
-
-  // Send an empty response
-  // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-  sendResponse({});
-  return true;
-});
+};
