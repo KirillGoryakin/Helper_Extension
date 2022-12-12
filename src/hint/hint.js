@@ -1,5 +1,5 @@
-import { currencyNameDiv, greySpan } from "./hintElements";
-import { tryCalculate, tryConvertCurrency } from "./tryActions";
+import { currencyNameDiv, greySpan, textSpan } from "./hintElements";
+import { tryCalculate, tryConvertCurrency, tryTransalte } from "./tryActions";
 
 export const setHint = async ({ text, rect }) => {
   const hintEl = document.getElementById('hint_extension__hint');
@@ -28,6 +28,10 @@ export const setHint = async ({ text, rect }) => {
         `));
   if (currencyConverted) { showHint(true); return; };
 
+  const translated = await tryTransalte(text,
+    res => setContent(textSpan(res.replace('\n', '<br/>'))));
+  if (translated) { showHint(true); return; }
+  
   showHint();
 };
 

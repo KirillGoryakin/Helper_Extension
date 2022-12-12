@@ -1,6 +1,6 @@
 import stringMath from 'string-math';
 import { mostTraded, crypto } from '../../public/currency-list.json';
-import { getRates } from '../utils';
+import { getRates, getTranslation } from '../utils';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
@@ -55,6 +55,20 @@ export const tryConvertCurrency = async (text, cb) => {
 
     const res = format(convert(clean(text)));
     cb(curr, res);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const tryTransalte = async (text, cb) => {
+  const isText = /\b[^\d\W]+\b/g.test(text);
+
+  if (!isText) return false;
+
+  try {
+    const res = await getTranslation(text);
+    cb(res.translation[0]);
     return true;
   } catch {
     return false;

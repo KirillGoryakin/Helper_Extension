@@ -3,3 +3,6 @@ export const greySpan = (content) =>
 
 export const currencyNameDiv = (content) =>
   `<div class="hint_currency_name hint_extension">${content}</div>`;
+
+export const textSpan = (content) =>
+  `<div class="hint_text hint_extension">${content}</div>`;

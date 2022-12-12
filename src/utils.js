@@ -100,3 +100,27 @@ export const getRates = () =>
         [symbol.toUpperCase()]: 1 / current_price
       }), {}),
     }));// e.g. { UDS: 1, EUR: 0.949031, BTC: 0.000058 ... }
+
+export const getTranslation = (text) => {
+  const URL = 'https://api.reverso.net/translate/v1/translation';
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      input: text,
+      from: "eng",
+      to: "rus",
+      format: "text",
+      options: {
+        contextResults: true,
+        languageDetection: true,
+        origin: "reversomobile",
+        sentenceSplitter: false
+      }
+    })
+  };
+
+  return fetch(URL, options).then(res => res.json());
+}
