@@ -35,6 +35,3 @@ document.onmouseup = (e) => {
       hideHint();
   }
 };
-
-// chrome.storage.local.clear();
-chrome.storage.local.get().then(console.log);
