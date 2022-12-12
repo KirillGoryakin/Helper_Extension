@@ -31,17 +31,23 @@ export const tryConvertCurrency = (text, cb) => {
   const isPrice =
     text.replace(/\s/g, '').length <= 18 &&
     /\d/g.test(text) && // Includes digits
-    currList.some(curr => text.includes(curr.symbol)); // Includes currency symbol
+    currList.some(curr => 
+      text.includes(curr.code) ||
+      text.includes(curr.symbol)
+    ); // Includes currency symbol or code
 
   if (!isPrice) return false;
 
   try {
-    const curr = currList.find(curr => text.includes(curr.symbol));
+    const curr = currList.find(curr => 
+      text.includes(curr.code) ||
+      text.includes(curr.symbol)
+    );
 
     const clean = (x) => x
       .replace(/[^\d.,]/g, '') // Remove any character except digits . and ,
-      .replace(/[,.](?=\d{3})/g, '') // Remove . and , which have 3 digist after it
-      .replace(/,(?=\d{2})/g, '.'); // Replace , which has 2 digist after it with .
+      .replace(/[,.](?=\d{3}\D)/g, '') // Remove . and , which have 3 digist after it
+      .replace(/,(?=\d+)/g, '.'); // Replace , which has 2 digist after it with .
     
     const convert = (x) => 
       curr.code === 'USD' ?
@@ -54,7 +60,7 @@ export const tryConvertCurrency = (text, cb) => {
     );
 
     const res = format(convert(clean(text)));
-    cb(res);
+    cb(curr, res);
     return true;
   } catch {
     return false;

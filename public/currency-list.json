@@ -17,7 +17,6 @@
     {"name":"Indian Rupee","code":"INR","symbol":"₹"},
     {"name":"Mexican Peso","code":"MXN","symbol":"$"},
     {"name":"New Taiwan Dollar","code":"TWD","symbol":"$"},
-    {"name":"South African Rand","code":"ZAR","symbol":"R"},
     {"name":"Brazilian Real","code":"BRL","symbol":"R$"},
     {"name":"Danish Krone","code":"DKK","symbol":"Kr."},
     {"name":"Polish Zloty","code":"PLN","symbol":"zł"},
@@ -34,6 +33,7 @@
     {"name":"Malaysian Ringgit","code":"MYR","symbol":"RM"},
     {"name":"Colombian Peso","code":"COP","symbol":"$"},
     {"name":"Russian Ruble","code":"RUB","symbol":"₽"},
+    {"name":"South African Rand","code":"ZAR","symbol":"R"},
     {"name":"Belarusian Ruble","code":"BYR","symbol":"Br"},
     {"name":"Ukrainian Hryvnia","code":"UAH","symbol":"₴"}
   ],

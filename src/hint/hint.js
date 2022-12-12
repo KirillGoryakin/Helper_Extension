@@ -21,7 +21,10 @@ export const setHint = ({ text, rect }) => {
     showHint();
   else if (tryConvertCurrency(
       text,
-      res => setContent(`<span class="grey">~</span> ${res}`))
+      (curr, res) => setContent(`
+        <div class="hint_currency_name">${curr.name}</div>
+        <span class="grey">~</span> ${res}
+      `))
     )
     showHint();
   else
