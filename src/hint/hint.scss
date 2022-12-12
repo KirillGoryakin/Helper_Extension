@@ -44,7 +44,7 @@ div#hint_extension__hint {
     justify-content: center;
     gap: 8px;
 
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 
     & img {
       width: 24px;
@@ -89,6 +89,7 @@ div#hint_extension__hint {
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
+  &.small::before { cursor: pointer; }
 
   &--wrap {
     transform: translateY(8px);
@@ -99,12 +100,13 @@ div#hint_extension__hint {
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
+  &.small &--wrap { display: none; }
 
   &::after {
     content: '';
     position: absolute;
     display: block;
-    top: 2px;
+    top: 3px;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
 
@@ -113,6 +115,7 @@ div#hint_extension__hint {
 
     background: $background;
   }
+  &.small::after { display: none; }
   
   &.hidden {
     display: none !important;

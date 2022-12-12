@@ -1,11 +1,10 @@
 import stringMath from 'string-math';
 import { mostTraded, crypto } from '../../public/currency-list.json';
-import { rates as fiatRates } from '../../public/USD.json';
-import cryptoRates from '../../public/CRYPTO.json';
+import { getRates } from '../utils';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
-    /(?!\d+\s*)[\+\-\/\*](?=\s*\d+)/g.test(text);
+    /[\+\-\/\*](?=\s*\d+)/g.test(text);
   
   if(!isEquation) return false;
 
@@ -18,36 +17,31 @@ export const tryCalculate = (text, cb) => {
   }
 };
 
-export const tryConvertCurrency = (text, cb) => {
+export const tryConvertCurrency = async (text, cb) => {
   const currList = mostTraded.concat(crypto);
-  const rates = {
-    ...fiatRates,
-    ...cryptoRates.reduce((a, { symbol, current_price }) => ({
-      ...a,
-      [symbol.toUpperCase()]: 1 / current_price
-    }), {})
-  };
-  
+
   const isPrice =
-    text.replace(/\s/g, '').length <= 18 &&
-    /\d/g.test(text) && // Includes digits
-    currList.some(curr => 
+    text.replace(/\s/g, '').length <= 20 &&
+    /\d/g.test(text) &&           // Includes digits
+    currList.some(curr =>         // Includes currency symbol or code
       text.includes(curr.code) ||
       text.includes(curr.symbol)
-    ); // Includes currency symbol or code
+    );
 
   if (!isPrice) return false;
 
   try {
+    const rates = await getRates();
+    
     const curr = currList.find(curr => 
       text.includes(curr.code) ||
       text.includes(curr.symbol)
     );
 
     const clean = (x) => x
-      .replace(/[^\d.,]/g, '') // Remove any character except digits . and ,
-      .replace(/[,.](?=\d{3}\D)/g, '') // Remove . and , which have 3 digist after it
-      .replace(/,(?=\d+)/g, '.'); // Replace , which has 2 digist after it with .
+      .replace(/[^\d.,]/g, '')         // Remove any character except digits . and ,
+      .replace(/[,.](?=\d{3}\b)/g, '') // Remove . and , which have 3 digist after it
+      .replace(',', '.');              // Replace , with .
     
     const convert = (x) => 
       curr.code === 'USD' ?

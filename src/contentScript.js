@@ -1,4 +1,4 @@
-import { createElementsFromHTML, getSelection } from './functions';
+import { createElementsFromHTML, getSelection } from './utils';
 import { setHint, hideHint } from './hint/hint';
 
 import hintHTML from './hint/hint.html';
@@ -26,7 +26,7 @@ translateButton.onclick = (e) => {
 };
 
 document.onmouseup = (e) => {
-  if ( !e.target.id.includes('hint_extension__hint') ){
+  if (!e.target.classList.contains('hint_extension')){
     const selection = getSelection();
 
     if (selection && selection.text.trim() && selection.rect)
@@ -35,3 +35,6 @@ document.onmouseup = (e) => {
       hideHint();
   }
 };
+
+// chrome.storage.local.clear();
+chrome.storage.local.get().then(console.log);
