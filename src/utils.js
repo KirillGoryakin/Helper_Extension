@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const getSelection = () => {
   var activeEl = document.activeElement;
   var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
@@ -40,10 +42,9 @@ export const getFiatRates = () => {
   const fetchData = () => {
     const URL = 'https://open.er-api.com/v6/latest/USD';
     
-    return fetch(URL)
-      .then(res => res.json())
-      .then(data => {
-        const fiatRates = { cacheDate: new Date(), data };
+    return axios.get(URL)
+      .then(({ data }) => {
+        const fiatRates = { cacheDate: new Date().toISOString(), data };
         return chrome.storage.local.set({ fiatRates })
           .then(() => fiatRates.data);
       });
@@ -68,10 +69,9 @@ export const getCryptoRates = () => {
     const URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false';
     const options = { headers: { 'accept': 'application/json' } };
 
-    return fetch(URL, options)
-      .then(res => res.json())
-      .then(data => {
-        const cryptoRates = { cacheDate: new Date(), data };
+    return axios.get(URL, options)
+      .then(({ data }) => {
+        const cryptoRates = { cacheDate: new Date().toISOString(), data };
         return chrome.storage.local.set({ cryptoRates })
           .then(() => cryptoRates.data);
       });
@@ -102,25 +102,19 @@ export const getRates = () =>
     }));// e.g. { UDS: 1, EUR: 0.949031, BTC: 0.000058 ... }
 
 export const getTranslation = (text) => {
-  const URL = 'https://api.reverso.net/translate/v1/translation';
   const options = {
     method: 'POST',
+    url: 'https://translo.p.rapidapi.com/api/v3/translate',
     headers: {
-      'Content-Type': 'application/json'
+      'content-type': 'application/x-www-form-urlencoded',
+      'X-RapidAPI-Host': 'translo.p.rapidapi.com',
+      'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY
     },
-    body: JSON.stringify({
-      input: text,
-      from: "eng",
-      to: "rus",
-      format: "text",
-      options: {
-        contextResults: true,
-        languageDetection: true,
-        origin: "reversomobile",
-        sentenceSplitter: false
-      }
-    })
+    data: {
+      to: 'ru',
+      text
+    }
   };
 
-  return fetch(URL, options).then(res => res.json());
+  return axios(options).then(({ data }) => data);
 }

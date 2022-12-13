@@ -2,6 +2,7 @@
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require('dotenv-webpack');
 
 const PATHS = require('./paths');
 
@@ -91,6 +92,7 @@ const common = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
+    new Dotenv(),
   ],
 };
 

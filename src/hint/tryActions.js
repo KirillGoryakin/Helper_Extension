@@ -1,6 +1,7 @@
 import stringMath from 'string-math';
 import { mostTraded, crypto } from '../../public/currency-list.json';
 import { getRates, getTranslation } from '../utils';
+import { loadingElement } from './hintElements';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
@@ -19,7 +20,7 @@ export const tryCalculate = (text, cb) => {
 
 export const tryConvertCurrency = async (text, cb) => {
   const currList = mostTraded.concat(crypto);
-
+  
   const isPrice =
     text.replace(/\s/g, '').length <= 20 &&
     /\d/g.test(text) &&           // Includes digits
@@ -29,7 +30,7 @@ export const tryConvertCurrency = async (text, cb) => {
     );
 
   if (!isPrice) return false;
-
+  
   try {
     const rates = await getRates();
     
@@ -62,13 +63,19 @@ export const tryConvertCurrency = async (text, cb) => {
 };
 
 export const tryTransalte = async (text, cb) => {
-  const isText = /\b[^\d\W]+\b/g.test(text);
+  const isText = 
+    text.replace(/\d/g, '').length > 0 &&
+    text.replace(/\s{2,}/g, '').length < 500;
 
   if (!isText) return false;
+  
+  cb(loadingElement());
 
   try {
-    const res = await getTranslation(text);
-    cb(res.translation[0]);
+    const clean = (x) => x.trim().replace(/\s{2,}/g, '');
+    
+    const { translated_text: res } = await getTranslation(clean(text));
+    cb(res);
     return true;
   } catch {
     return false;

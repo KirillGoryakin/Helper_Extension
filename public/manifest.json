@@ -29,7 +29,8 @@
       "resources": [
         "icons/calculator.png",
         "icons/currency.png",
-        "icons/translate.png"
+        "icons/translate.png",
+        "gifs/loading.gif"
       ]
     }
   ]
