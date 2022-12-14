@@ -2,8 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
 
 $primaryColor: #e1a72b;
+$secondaryColor: #009568;
 
 div#hint_extension__hint {
+  &, &:before, &:after, & *, & *:before, & *:after {
+    box-sizing: border-box;
+  }
+  
   position: absolute;
   top: 0;
   left: 0;

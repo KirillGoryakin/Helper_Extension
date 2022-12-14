@@ -27,6 +27,9 @@ const common = {
     assets: true,
     excludeAssets: [IMAGE_TYPES],
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
+  },
   module: {
     rules: [
       {
@@ -66,13 +69,14 @@ const common = {
         ],
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              '@babel/preset-env'
+              '@babel/preset-env',
+              ["@babel/preset-react", { "runtime": "automatic" }]
             ]
           }
         }
@@ -80,7 +84,6 @@ const common = {
     ],
   },
   plugins: [
-    // Copy static assets from `public` folder to `build` folder
     new CopyWebpackPlugin({
       patterns: [
         {

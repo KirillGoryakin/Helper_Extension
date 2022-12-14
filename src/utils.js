@@ -1,5 +1,31 @@
 import axios from 'axios';
 
+export const defaultOptions = {
+  'calculating.enable': true,
+
+  'currency.enable': true,
+
+  'translation.enable': true,
+  'translation.apiKey': '',
+};
+
+export const getOptions = () => 
+  chrome.storage.local.get(['options'])
+    .then(data => {
+      if (data.options) return data.options;
+
+      return chrome.storage.local.set({ options: defaultOptions })
+        .then(() => defaultOptions);
+    });
+
+export const setOptions = (cb) =>
+  chrome.storage.local.get(['options'])
+    .then(({ options }) => {
+      const newOptions = cb(options);
+      return chrome.storage.local.set({ options: newOptions })
+        .then(() => newOptions);
+    });
+
 export const getSelection = () => {
   var activeEl = document.activeElement;
   var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;

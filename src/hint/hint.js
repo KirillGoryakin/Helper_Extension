@@ -31,9 +31,9 @@ export const setHint = async ({ text, rect }) => {
         `, true));
   if (currencyConverted) return;
 
-  const translated = await tryTransalte(text,
-    res => setContent(textSpan(res), true));
-  if (translated) return;
+  // const translated = await tryTransalte(text,
+  //   res => setContent(textSpan(res), true));
+  // if (translated) return;
   
   showHint();
 };
