@@ -5,7 +5,8 @@ import { loadingElement } from './hintElements';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
-    /[\+\-\/\*](?=\s*\d+)/g.test(text);
+    /[\+\-\/\*](?=\s*\.?\d+)/g.test(text) && // Includes +, -, /, or * which has a digit after it
+    /^\.?\d/.test(text.trim());              // First char is a digit (with dot)
   
   if(!isEquation) return false;
 
