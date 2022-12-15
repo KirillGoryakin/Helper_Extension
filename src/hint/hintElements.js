@@ -16,3 +16,6 @@ export const currencyNameDiv = (content) =>
 
 export const textSpan = (content) =>
   `<div class="hint_text hint_extension--element">${content}</div>`;
+
+export const subText = (content) =>
+  `<div class="hint_subtext hint_extension--element">${content}</div>`;

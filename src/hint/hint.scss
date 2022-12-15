@@ -43,6 +43,13 @@ div#hint_extension__hint {
       color: rgba(0, 0, 0, 0.6);
     }
 
+    & > .hint_subtext {
+      font-size: 10px;
+      font-weight: 400;
+      text-align: center;
+      color: $primaryColor;
+    }
+
     & > .hint_text {
       font-size: 16px;
       font-weight: 500;

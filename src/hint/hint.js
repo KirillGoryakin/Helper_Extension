@@ -1,5 +1,11 @@
 import { getOptions } from "../utils";
-import { currencyNameDiv, greySpan, textSpan } from "./hintElements";
+import {
+  currencyNameDiv,
+  greySpan,
+  loadingElement,
+  subText,
+  textSpan
+} from "./hintElements";
 import { tryCalculate, tryConvertCurrency, tryTransalte } from "./tryActions";
 
 export const setHint = async ({ text, rect }) => {
@@ -30,17 +36,18 @@ export const setHint = async ({ text, rect }) => {
 
   if (options['currency.enable']){
     const done = await tryConvertCurrency(
-      text, (curr, res) =>
-      setContent(`
+      text, (res, curr, cacheDate) =>
+      setContent(res ? `
           ${currencyNameDiv(curr.name)}
           ${greySpan('~')} ${res}
-        `, true));
+          ${subText(`Last updated: ${cacheDate}`)}
+        ` : loadingElement(), true));
     if (done) return;
   }
 
   if (options['translation.enable']){
     const done = await tryTransalte(text,
-      res => setContent(textSpan(res), true));
+      res => setContent(res ? textSpan(res) : loadingElement(), true));
     if (done) return;
   }
 };

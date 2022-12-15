@@ -1,12 +1,11 @@
 import stringMath from 'string-math';
 import { mostTraded, crypto } from '../../public/currency-list.json';
-import { getRates, getTranslation } from '../utils';
-import { loadingElement } from './hintElements';
+import { getRates, getRatesCacheDate, getTranslation } from '../utils';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
     /[\+\-\/\*](?=\s*\.?\d+)/g.test(text) && // Includes +, -, /, or * which has a digit after it
-    /^\.?\d/.test(text.trim());              // First char is a digit (with dot)
+    /^\.?\d/.test(text.trim());              // First char is (dot with) digit
   
   if(!isEquation) return false;
 
@@ -32,10 +31,14 @@ export const tryConvertCurrency = async (text, cb) => {
 
   if (!isPrice) return false;
 
-  cb(loadingElement());
+  cb(null);
   
   try {
     const rates = await getRates();
+    const cacheDate =
+      new Date(await getRatesCacheDate())
+      .toLocaleString()
+      .replace(/\//g, '.');
     
     const curr = currList.find(curr => 
       text.includes(curr.code) ||
@@ -58,7 +61,7 @@ export const tryConvertCurrency = async (text, cb) => {
     );
 
     const res = format(convert(clean(text)));
-    cb(curr, res);
+    cb(res, curr, cacheDate);
     return true;
   } catch {
     return false;
@@ -67,20 +70,20 @@ export const tryConvertCurrency = async (text, cb) => {
 
 export const tryTransalte = async (text, cb) => {
   const isText = 
-    text.replace(/\d/g, '').length > 0 &&
-    text.replace(/\s{2,}/g, '').length < 500;
+    /\p{L}/u.test(text) &&                    // Includes any letters
+    text.replace(/\s{2,}/g, '').length < 500; // Length < 500
 
   if (!isText) return false;
   
-  cb(loadingElement());
+  cb(null);
 
   try {
     const clean = (x) => x.trim().replace(/\s{2,}/g, '');
     
     const { translated_text: res } = await getTranslation(clean(text));
-    cb(res);
+    cb(res.replace('\n', '<br />'));
     return true;
   } catch {
     return false;
   }
-};
+};  
