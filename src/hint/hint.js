@@ -5,10 +5,11 @@ import { tryCalculate, tryConvertCurrency, tryTransalte } from "./tryActions";
 export const setHint = async ({ text, rect }) => {
   const hintEl = document.getElementById('hint_extension__hint');
   const hintContent = document.getElementById('hint_extension__hint--content');
+  const options = await getOptions();
 
-  const showHint = (isFullSize = false) => {
+  const showHint = () => {
     hintEl.classList.remove('hidden');
-    if (isFullSize) hintEl.classList.remove('small');
+    hintEl.classList.remove('small');
     hintEl.style.cssText = `
       top: ${rect.bottom + window.scrollY}px;
       left: ${rect.left + window.scrollX + rect.width / 2}px;
@@ -17,10 +18,9 @@ export const setHint = async ({ text, rect }) => {
   
   const setContent = (content, doShowHint = false) => {
     hintContent.innerHTML = content;
-    if(doShowHint) showHint(true);
+    if(doShowHint) showHint();
   };
   
-  const options = await getOptions();
   
   if (options['calculating.enable']){
     const done = await tryCalculate(text,
@@ -43,8 +43,6 @@ export const setHint = async ({ text, rect }) => {
       res => setContent(textSpan(res), true));
     if (done) return;
   }
-  
-  showHint();
 };
 
 export const hideHint = () => {

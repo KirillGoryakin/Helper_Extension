@@ -28,7 +28,7 @@ div#hint_extension__hint {
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 12px;
+    // margin-bottom: 12px;
     color:rgba(0, 0, 0, 0.9);
 
     & > span.grey {
@@ -55,42 +55,9 @@ div#hint_extension__hint {
       margin: 0 auto;
 
       & > img {
+        width: 100%;
         max-width: 100%;
       }
-    }
-  }
-
-  &--buttons {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-
-    margin-bottom: 8px;
-
-    & img {
-      width: 24px;
-      height: 24px;
-
-      transition: transform 0.15s ease-in-out;
-      &:hover { transform: scale(1.1); }
-      
-      cursor: pointer;
-      user-select: none;
-    }
-  }
-
-  &--icon_credits {
-    font-size: 10px;
-    font-weight: 400;
-    text-align: center;
-    color: $primaryColor;
-
-    & a {
-      font-size: inherit;
-      font-weight: inherit;
-      text-align: inherit;
-      color: inherit;
-      text-decoration: underline;
     }
   }
 

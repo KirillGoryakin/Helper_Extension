@@ -31,6 +31,8 @@ export const tryConvertCurrency = async (text, cb) => {
     );
 
   if (!isPrice) return false;
+
+  cb(loadingElement());
   
   try {
     const rates = await getRates();
