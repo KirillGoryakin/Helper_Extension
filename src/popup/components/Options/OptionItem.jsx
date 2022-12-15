@@ -1,7 +1,16 @@
-import { Flex, Switch, Text } from "@chakra-ui/react";
+import { Flex, Input, Switch, Text } from "@chakra-ui/react";
 
-const OptionItem = ({ children, value, setValue, type = 'switch' }) => {
-  if (type === 'switch') return (
+const OptionItem = (props) => {
+  const {
+    children,
+    value,
+    setValue,
+    type = 'switch',
+    disabled = false,
+    placeholder = ''
+  } = props;
+  
+  return (
     <Flex
       as='label'
       justifyContent='space-between'
@@ -22,11 +31,25 @@ const OptionItem = ({ children, value, setValue, type = 'switch' }) => {
       >
         {children}
       </Text>
-      <Switch
-        colorScheme='secondary'
-        isChecked={value}
-        onChange={(e) => setValue(e.target.checked)}
-      />
+
+      {type === 'switch' ?
+        <Switch
+          colorScheme='secondary'
+          isChecked={value}
+          onChange={(e) => setValue(e.target.checked)}
+          disabled={disabled}
+        />
+        : type === 'text' && 
+        <Input
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          onFocus={e => e.target.select()}
+          placeholder={placeholder}
+          size='sm'
+          w={200}
+        />
+      }
+
     </Flex>
   )
 

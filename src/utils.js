@@ -5,8 +5,10 @@ export const defaultOptions = {
 
   'currency.enable': true,
 
-  'translation.enable': true,
   'translation.apiKey': '',
+  'translation.enable': true,
+  'translation.language': 'ru',
+  'translation.enableCache': true,
 };
 
 export const getOptions = () => 
@@ -127,20 +129,48 @@ export const getRates = () =>
       }), {}),
     }));// e.g. { UDS: 1, EUR: 0.949031, BTC: 0.000058 ... }
 
-export const getTranslation = (text) => {
-  const options = {
-    method: 'POST',
-    url: 'https://translo.p.rapidapi.com/api/v3/translate',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'X-RapidAPI-Host': 'translo.p.rapidapi.com',
-      'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY
-    },
-    data: {
-      to: 'ru',
-      text
-    }
+export const getTranslation = async (text) => {
+  const ops = await getOptions();
+  const to = ops['translation.language'] || 'ru';
+  
+  const storage = await chrome.storage.local.get(['translationCache']);
+  
+  const requestTranslation = async () => {
+    const options = {
+      method: 'POST',
+      url: 'https://translo.p.rapidapi.com/api/v3/translate',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Host': 'translo.p.rapidapi.com',
+        'X-RapidAPI-Key': ops['translation.apiKey'] || process.env.X_RAPIDAPI_KEY
+      },
+      data: {
+        from: 'auto',
+        to,
+        text
+      }
+    };
+    const { data } = await axios(options);
+    
+    const cache = storage.translationCache || [];
+    const newItem = {
+      text,
+      to,
+      translated_text: data.translated_text,
+    };
+
+    await chrome.storage.local.set({
+      translationCache: [ newItem, ...cache ].slice(0, 300)
+    });
+    
+    return data;
   };
 
-  return axios(options).then(({ data }) => data);
-}
+  if (!storage.translationCache) return requestTranslation();
+  const { translationCache: cache } = storage;
+  
+  const cachedTranslation = cache.find(item => 
+    item.text === text && item.to === to);
+
+  return cachedTranslation || requestTranslation();
+};

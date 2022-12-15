@@ -1,9 +1,7 @@
 import { Box, Divider, Heading } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { Options } from "./components/Options";
-import OptionsStore from "./OptionsStore";
 
-const App = observer(() => {
+const App = () => {
   return (
     <Box
       p={4}
@@ -28,6 +26,6 @@ const App = observer(() => {
       <Options />
     </Box>
   )
-});
+};
 
 export { App };

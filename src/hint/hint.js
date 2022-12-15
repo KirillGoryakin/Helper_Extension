@@ -1,3 +1,4 @@
+import { getOptions } from "../utils";
 import { currencyNameDiv, greySpan, textSpan } from "./hintElements";
 import { tryCalculate, tryConvertCurrency, tryTransalte } from "./tryActions";
 
@@ -19,21 +20,29 @@ export const setHint = async ({ text, rect }) => {
     if(doShowHint) showHint(true);
   };
   
-  const calculated = await tryCalculate(text,
-    res => setContent(`${greySpan('=')} ${res}`, true));
-  if (calculated) return;
+  const options = await getOptions();
+  
+  if (options['calculating.enable']){
+    const done = await tryCalculate(text,
+      res => setContent(`${greySpan('=')} ${res}`, true));
+    if (done) return;
+  }
 
-  const currencyConverted = await tryConvertCurrency(
-    text, (curr, res) =>
+  if (options['currency.enable']){
+    const done = await tryConvertCurrency(
+      text, (curr, res) =>
       setContent(`
           ${currencyNameDiv(curr.name)}
           ${greySpan('~')} ${res}
         `, true));
-  if (currencyConverted) return;
+    if (done) return;
+  }
 
-  // const translated = await tryTransalte(text,
-  //   res => setContent(textSpan(res), true));
-  // if (translated) return;
+  if (options['translation.enable']){
+    const done = await tryTransalte(text,
+      res => setContent(textSpan(res), true));
+    if (done) return;
+  }
   
   showHint();
 };
