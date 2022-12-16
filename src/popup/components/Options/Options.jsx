@@ -1,15 +1,17 @@
 import { observer } from "mobx-react-lite";
-import OptionsStore from "../../optionsStore";
+import Store from "../../Store";
 import { QuestionIcon } from '@chakra-ui/icons';
 import { OptionHeading } from "./OptionHeading";
 import { OptionItem } from "./OptionItem";
 import { OptionList } from "./OptionList";
+import { Button, Select } from "@chakra-ui/react";
+import languages from '../../languages.json';
 
 const Options = observer(() => {
 
   const itemProps = (key) => ({
-    value: OptionsStore.options[key],
-    setValue: (value) => OptionsStore.setOptions(
+    value: Store.options[key],
+    setValue: (value) => Store.setOptions(
       options => ({ ...options, [key]: value })),
   });
 
@@ -37,6 +39,7 @@ const Options = observer(() => {
       <OptionList>
         <OptionItem
           {...itemProps('translation.enable')}
+          disabled={Store.options['translation.apiKey'] ? false : true}
         >
           Enable
         </OptionItem>
@@ -57,6 +60,41 @@ const Options = observer(() => {
             />
           </a>
         </OptionItem>
+        <OptionItem
+          type='custom'
+          element={
+            <Select
+              size='sm'
+              variant='filled'
+              w={175}
+              value={Store.options['translation.language']}
+              onChange={e => Store.setOptions(options => ({
+                  ...options,
+                  ['translation.language']: e.target.value
+                }))}
+            >
+              {languages.map(lang => 
+                <option key={lang.code} value={lang.code}>
+                  {lang.name}
+                </option>
+              )}
+            </Select>
+          }
+        >
+          Translate to
+        </OptionItem>
+        <Button
+          onClick={Store.clearTranslationCache}
+          colorScheme='secondary'
+          variant={Store.translationCache.length > 0 ? 'solid' : 'outline'}
+          size='sm'
+          minW={150}
+          w='max-content'
+          mx='auto'
+          mt={2}
+        >
+          Clear Cache
+        </Button>
       </OptionList>
     </div>
   )

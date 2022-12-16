@@ -5,10 +5,9 @@ export const defaultOptions = {
 
   'currency.enable': true,
 
+  'translation.enable': false,
   'translation.apiKey': '',
-  'translation.enable': true,
   'translation.language': 'ru',
-  'translation.enableCache': true,
 };
 
 export const getOptions = () => 
@@ -129,11 +128,22 @@ export const getRates = () =>
       }), {}),
     }));// e.g. { UDS: 1, EUR: 0.949031, BTC: 0.000058 ... }
 
+export const getRatesCacheDate = () =>
+  chrome.storage.local.get(['fiatRates'])
+    .then(res => res.fiatRates.cacheDate || new Date().toISOString());
+
+export const getTranslationCache = () =>
+  chrome.storage.local.get(['translationCache'])
+    .then(storage => storage.translationCache || []);
+
+export const setTranslationCache = (cache) =>
+  chrome.storage.local.set({ translationCache: [...cache] });
+
 export const getTranslation = async (text) => {
   const ops = await getOptions();
   const to = ops['translation.language'] || 'ru';
   
-  const storage = await chrome.storage.local.get(['translationCache']);
+  const cache = await getTranslationCache();
   
   const requestTranslation = async () => {
     const options = {
@@ -142,7 +152,7 @@ export const getTranslation = async (text) => {
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
         'X-RapidAPI-Host': 'translo.p.rapidapi.com',
-        'X-RapidAPI-Key': ops['translation.apiKey'] || process.env.X_RAPIDAPI_KEY
+        'X-RapidAPI-Key': ops['translation.apiKey']
       },
       data: {
         from: 'auto',
@@ -151,24 +161,23 @@ export const getTranslation = async (text) => {
       }
     };
     const { data } = await axios(options);
-    
-    const cache = storage.translationCache || [];
+
     const newItem = {
       text,
       to,
       translated_text: data.translated_text,
     };
 
-    await chrome.storage.local.set({
-      translationCache: [ newItem, ...cache ].slice(0, 300)
-    });
+    await setTranslationCache([newItem, ...cache].slice(0, 300));
     
     return data;
   };
 
-  if (!storage.translationCache) return requestTranslation();
-  const { translationCache: cache } = storage;
-  
+  if (!ops['translation.apiKey']) {
+    await setOptions(options => ({ ...options, 'translation.enable': false }));
+    return null;
+  }
+
   const cachedTranslation = cache.find(item => 
     item.text === text && item.to === to);
 

@@ -1,4 +1,10 @@
-import { Flex, Input, Switch, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  Select,
+  Switch,
+  Text
+} from "@chakra-ui/react";
 
 const OptionItem = (props) => {
   const {
@@ -7,7 +13,8 @@ const OptionItem = (props) => {
     setValue,
     type = 'switch',
     disabled = false,
-    placeholder = ''
+    placeholder = '',
+    element = null,
   } = props;
   
   return (
@@ -22,12 +29,13 @@ const OptionItem = (props) => {
       cursor='pointer'
       transition='background 0.15s ease-in-out'
       _hover={{
-        background: 'rgba(0, 0, 0, 10%)'
+        background: `rgba(0, 0, 0, ${disabled ? '2.5%' : '10%'})`
       }}
     >
       <Text
         fontSize={16}
         fontWeight={500}
+        color={disabled ? 'grey' : 'black'}
       >
         {children}
       </Text>
@@ -39,15 +47,17 @@ const OptionItem = (props) => {
           onChange={(e) => setValue(e.target.checked)}
           disabled={disabled}
         />
-        : type === 'text' && 
+        : type === 'text' ?
         <Input
           value={value}
           onChange={e => setValue(e.target.value)}
           onFocus={e => e.target.select()}
+          variant='filled'
           placeholder={placeholder}
           size='sm'
-          w={200}
+          w={175}
         />
+        : type === 'custom' && element
       }
 
     </Flex>

@@ -1,5 +1,5 @@
 import stringMath from 'string-math';
-import { mostTraded, crypto } from '../../public/currency-list.json';
+import { mostTraded, crypto } from './currency-list.json';
 import { getRates, getRatesCacheDate, getTranslation } from '../utils';
 
 export const tryCalculate = (text, cb) => {
@@ -82,6 +82,7 @@ export const tryTransalte = async (text, cb) => {
     
     const { translated_text: res } = await getTranslation(clean(text));
     cb(res.replace('\n', '<br />'));
+    
     return true;
   } catch {
     return false;
