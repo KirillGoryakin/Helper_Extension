@@ -5,7 +5,7 @@ import { getRates, getRatesCacheDate, getTranslation } from '../utils';
 export const tryCalculate = (text, cb) => {
   const isEquation =
     /[\+\-\/\*](?=\s*\.?\d+)/g.test(text) && // Includes +, -, /, or * which has a digit after it
-    /^\.?\d/.test(text.trim());              // First char is (dot with) digit
+    /^(\.?|-?)\d/g.test(text.trim());        // First char is (. or - with) digit
   
   if(!isEquation) return false;
 
