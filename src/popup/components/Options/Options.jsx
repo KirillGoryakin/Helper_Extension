@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import Store from "../../Store";
+import { SetToDefault } from "./SetToDefault";
 import { QuestionIcon } from '@chakra-ui/icons';
 import { OptionHeading } from "./OptionHeading";
 import { OptionItem } from "./OptionItem";
@@ -20,6 +21,8 @@ const Options = observer(() => {
 
   return (
     <div>
+      <SetToDefault />
+      
       <OptionHeading>Calculating</OptionHeading>
       <OptionList>
         <OptionItem
