@@ -1,6 +1,6 @@
 import stringMath from 'string-math';
-import { mostTraded, crypto } from './currency-list.json';
-import { getRates, getRatesCacheDate, getTranslation } from '../utils';
+import { mostTraded, crypto } from '../currencies.json';
+import { getOptions, getRates, getRatesCacheDate, getTranslation } from '../utils';
 
 export const tryCalculate = (text, cb) => {
   const isEquation =
@@ -20,7 +20,7 @@ export const tryCalculate = (text, cb) => {
 
 export const tryConvertCurrency = async (text, cb) => {
   const currList = mostTraded.concat(crypto);
-  
+
   const isPrice =
     text.replace(/\s/g, '').length <= 20 &&
     /\d/g.test(text) &&           // Includes digits
@@ -30,11 +30,14 @@ export const tryConvertCurrency = async (text, cb) => {
     );
 
   if (!isPrice) return false;
-
+  
   cb(null);
   
   try {
     const rates = await getRates();
+    const ops = await getOptions();
+    const convertCurrCode = ops['currency.convertTo'];
+    
     const cacheDate =
       new Date(await getRatesCacheDate())
       .toLocaleString()
@@ -52,13 +55,19 @@ export const tryConvertCurrency = async (text, cb) => {
     
     const convert = (x) => 
       curr.code === 'USD' ?
-      x * rates.RUB :
-      x / rates[curr.code] * rates.RUB;
+      x * rates[convertCurrCode] :
+      x / rates[curr.code] * rates[convertCurrCode];
 
-    const { format } = new Intl.NumberFormat(
-      navigator.language,
-      { style: 'currency', currency: 'RUB' }
-    );
+    const format = (value) => {
+      try {
+        return new Intl.NumberFormat(
+          navigator.language,
+          { style: 'currency', currency: convertCurrCode }
+        ).format(value);
+      } catch {
+        return `${new Intl.NumberFormat(navigator.language).format(value)} ${convertCurrCode}`;
+      }
+    };
 
     const res = format(convert(clean(text)));
     cb(res, curr, cacheDate);

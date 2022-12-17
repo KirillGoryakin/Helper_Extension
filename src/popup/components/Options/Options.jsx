@@ -6,6 +6,9 @@ import { OptionItem } from "./OptionItem";
 import { OptionList } from "./OptionList";
 import { Button, Select } from "@chakra-ui/react";
 import languages from '../../languages.json';
+import { mostTraded, crypto, other } from '../../../currencies.json';
+
+const currencies = mostTraded.concat(other).concat(crypto);
 
 const Options = observer(() => {
 
@@ -32,6 +35,29 @@ const Options = observer(() => {
           {...itemProps('currency.enable')}
         >
           Enable
+        </OptionItem>
+        <OptionItem
+          type='custom'
+          element={
+            <Select
+              size='sm'
+              variant='filled'
+              w={175}
+              value={Store.options['currency.convertTo']}
+              onChange={e => Store.setOptions(options => ({
+                ...options,
+                ['currency.convertTo']: e.target.value
+              }))}
+            >
+              {currencies.map(curr =>
+                <option key={curr.code} value={curr.code}>
+                  {curr.name}
+                </option>
+              )}
+            </Select>
+          }
+        >
+          Convert to
         </OptionItem>
       </OptionList>
 

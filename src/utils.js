@@ -2,9 +2,8 @@ import axios from 'axios';
 
 export const defaultOptions = {
   'calculating.enable': true,
-
   'currency.enable': true,
-
+  'currency.convertTo': 'RUB',
   'translation.enable': false,
   'translation.apiKey': '',
   'translation.language': 'ru',
@@ -142,6 +141,11 @@ export const setTranslationCache = (cache) =>
 export const getTranslation = async (text) => {
   const ops = await getOptions();
   const to = ops['translation.language'] || 'ru';
+
+  if (!ops['translation.apiKey']) {
+    await setOptions(options => ({ ...options, 'translation.enable': false }));
+    return null;
+  }
   
   const cache = await getTranslationCache();
   
@@ -172,11 +176,6 @@ export const getTranslation = async (text) => {
     
     return data;
   };
-
-  if (!ops['translation.apiKey']) {
-    await setOptions(options => ({ ...options, 'translation.enable': false }));
-    return null;
-  }
 
   const cachedTranslation = cache.find(item => 
     item.text === text && item.to === to);
