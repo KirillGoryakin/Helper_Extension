@@ -4,7 +4,7 @@ const Credits = () => {
   return (
     <>
       <Link
-        href="https://github.com/KirillGoryakin/Helper_Extension"
+        href="https://github.com/KirillGoryakin/Hint_Extension"
         target='_blank'
         display='flex'
         alignItems='center'

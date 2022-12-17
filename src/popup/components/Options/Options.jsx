@@ -49,7 +49,7 @@ const Options = observer(() => {
           placeholder='API key'
         >
           API key
-          <a href="https://github.com/KirillGoryakin/Helper_Extension" target='_blank'>
+          <a href="https://github.com/KirillGoryakin/Hint_Extension" target='_blank'>
             <QuestionIcon
               w={3} h={3} mt={1} ml={1}
               verticalAlign='top'
