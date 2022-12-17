@@ -1,4 +1,5 @@
 import { Box, Divider, Heading } from "@chakra-ui/react";
+import { Credits } from "./components/Credits";
 import { Options } from "./components/Options";
 
 const App = () => {
@@ -24,6 +25,10 @@ const App = () => {
       <Divider my={4} />
 
       <Options />
+
+      <Divider my={4} />
+
+      <Credits />
     </Box>
   )
 };
