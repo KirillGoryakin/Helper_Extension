@@ -84,7 +84,6 @@ div#hint_extension__hint {
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
-  &.small::before { cursor: pointer; }
 
   &--wrap {
     transform: translateY(8px);
@@ -95,7 +94,6 @@ div#hint_extension__hint {
     border-radius: $border-radius;
     box-shadow: $box-shadow;
   }
-  &.small &--wrap { display: none; }
 
   &::after {
     content: '';
@@ -110,7 +108,6 @@ div#hint_extension__hint {
 
     background: $background;
   }
-  &.small::after { display: none; }
   
   &.hidden {
     display: none !important;

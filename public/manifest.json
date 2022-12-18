@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Hint Extension",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Hint Extension by Kirill Goryakin (github.com/KirillGoryakin). Icon by smashicons.com",
   "icons": {
     "16": "icons/icon_16.png",

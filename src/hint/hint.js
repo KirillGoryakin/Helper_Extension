@@ -15,7 +15,6 @@ export const setHint = async ({ text, rect }) => {
 
   const showHint = () => {
     hintEl.classList.remove('hidden');
-    hintEl.classList.remove('small');
     hintEl.style.cssText = `
       top: ${rect.bottom + window.scrollY}px;
       left: ${rect.left + window.scrollX + rect.width / 2}px;
@@ -26,7 +25,6 @@ export const setHint = async ({ text, rect }) => {
     hintContent.innerHTML = content;
     if(doShowHint) showHint();
   };
-  
   
   if (options['calculating.enable']){
     const done = await tryCalculate(text,
@@ -56,6 +54,6 @@ export const hideHint = () => {
   const hintEl = document.getElementById('hint_extension__hint');
   const hintContent = document.getElementById('hint_extension__hint--content');
 
-  hintEl.classList.add('hidden', 'small');
+  hintEl.classList.add('hidden');
   hintContent.innerHTML = '';
 };
