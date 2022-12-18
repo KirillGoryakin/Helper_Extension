@@ -25,10 +25,10 @@ Currency rates update once a day and save to cache. Text translations also save 
 
 <a name="install"></a>
 # <img src="docs/icons/download.png" width="45" align="left"> Install
-1. Go to [releases page](/KirillGoryakin/Hint_Extension/releases) and choose the latest release.
+1. Go to [releases page](/releases) and choose the latest release.
 2. Open *assets* dropdown and download *build-vX.X.X.zip* file<br/><img src="docs/screenshots/s5.png">
 3. Extract this archive anywhere you want to store your extension.
-4. Open your Chrome [extension menu](chrome://extensions/). Turn on the "*Developer mode*" and click "*Load unpacked*". Then choose path to your extracted "*build-vX.X.X*" folder.<br/><img src="docs/screenshots/s4.png">
+4. Open your [Chrome extension menu](chrome://extensions/). Turn on the "*Developer mode*" and click "*Load unpacked*". Then choose path to your extracted "*build-vX.X.X*" folder.<br/><img src="docs/screenshots/s4.png">
 
 That's it! You installed the extension! Remember that for text translation you need an API key. [How to get one?](#getKey)
 
@@ -46,7 +46,7 @@ Start webpack:
 ```
 npm run watch
 ```
-Then open your Chrome [extension menu](chrome://extensions/). Turn on the "*Developer mode*" and click "*Load unpacked*". Then choose path to your "*build*" folder.<br/><img src="docs/screenshots/s4.png">
+Then open your [Chrome extension menu](chrome://extensions/). Turn on the "*Developer mode*" and click "*Load unpacked*". Then choose path to your "*build*" folder.<br/><img src="docs/screenshots/s4.png">
 
 Production build:
 ```
