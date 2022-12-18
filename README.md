@@ -1,6 +1,5 @@
 <a name="main"></a>
-<img src="public/icons/icon_48.png" width="45" align="left">
-# Hint extension
+# <img src="public/icons/icon_48.png" width="45" align="left"> Hint extension
 
 This is a simple extension for Google Chrome browser that can give you hints of what you selected. It automatically detects if it's an equation, a price or it's just a text in a foreign language.
 
@@ -25,8 +24,7 @@ Currency rates update once a day and save to cache. Text translations also save 
 - [**Translo API**](https://rapidapi.com/armangokka/api/translo) from [**RapidAPI hub**](https://rapidapi.com/hub) for translations *([API key required](#getKey))*
 
 <a name="install"></a>
-<img src="docs/icons/download.png" width="45" align="left">
-# Install
+# <img src="docs/icons/download.png" width="45" align="left"> Install
 1. Go to [releases page](/KirillGoryakin/Hint_Extension/releases) and choose the latest release.
 2. Open *assets* dropdown and download *build-vX.X.X.zip* file<br/><img src="docs/screenshots/s5.png">
 3. Extract this archive anywhere you want to store your extension.
@@ -35,8 +33,7 @@ Currency rates update once a day and save to cache. Text translations also save 
 That's it! You installed the extension! Remember that for text translation you need an API key. [How to get one?](#getKey)
 
 <a name="dev"></a>
-<img src="docs/icons/dev.png" width="45" align="left">
-# Development
+# <img src="docs/icons/dev.png" width="45" align="left"> Development
 Clone repository:
 ```
 git clone https://github.com/KirillGoryakin/Hint_Extension.git
@@ -57,8 +54,7 @@ npm run build
 ```
 
 <a name="getKey"></a>
-<img src="docs/icons/api.png" width="45" align="left">
-# How to enable text translation?
+# <img src="docs/icons/api.png" width="45" align="left"> How to enable text translation?
 This extension uses [**Translo API**](https://rapidapi.com/armangokka/api/translo) for text translation. This API requires an **API key** to work. Don't worry! **It's free** and easy to get! You just need a few actions.
 
 ## How to get an **API key**?
